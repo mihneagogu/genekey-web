@@ -1,4 +1,4 @@
-class GeneKey {
+class GeneKey implements Queryable {
     index: number;
     shadow: KeyStatus;
     gift: KeyStatus;
@@ -52,31 +52,43 @@ class GeneKey {
     deeplConeId(newId: number): GeneKey {
         let gk = this.deepClone();
         gk.index = newId;
-        return gk
+        return gk;
     }
 
     /*
-        Queries the given gene key
+     *  Queries the given gene key
      */
-    public query(query: string) {
+    public query(query: string): string {
         // Use object syntax so it's easy to get the properties
-        let gkObj = this as any;
-        let trimmedQuery: string = query.trim();
-        let property: string[] = Object.keys(gkObj).filter(k => k == trimmedQuery);
-        if (property.length == 1) {  
-            // Asked for an actual propery
-            console.log(gkObj[trimmedQuery].toString());
-            return;
-        }
-        console.log("Invalid query");
+        let answer: string = query_params(query, this);
+        console.log(answer);
+        return answer;
     }
 }
 
-enum StatusType {
-    SHADOW, GIFT, SIDDHI
+/*
+ * Queries a given object seeing if the query is one of the properties
+ */
+function query_params(query: string, queried: any): string {
+    if (!queried) {
+        console.log("made me query a null or undefined object");
+        return "Query on null object";
+    }
+    let trimmedQuery: string = query.trim();
+    let property: string[] = Object.keys(queried).filter(k => k == trimmedQuery);
+    if (property.length == 1) {  
+        // Asked for an actual propery
+        let answer: string = queried[trimmedQuery].toString();
+        return answer;
+    }
+    return "Invalid query";
 }
 
-class KeyStatus {
+enum StatusType {
+    SHADOW = 'SHADOW', GIFT = 'GIFT', SIDDHI = 'SIDDHI'
+}
+
+class KeyStatus implements Queryable {
     type: StatusType;
     description: string;
     public constructor(type: StatusType, description: string) {
@@ -84,8 +96,29 @@ class KeyStatus {
         this.description = description;
     }
 
+    public typeToString(): string {
+        if (this.type === StatusType.GIFT) {
+            return "GIFT";
+        }
+        if (this.type === StatusType.SHADOW) {
+            return "SHADOW";
+        }
+        return "SIDDHI";
+    }
+
     public toString(): string {
         return `${this.type} => ${this.description}`;
+    }
+
+    public query(query: string): string {
+        if (query.trim() === 'type') {
+            let ans: string = this.typeToString();
+            console.log(ans);
+            return ans;
+        }
+        let answer: string = query_params(query, this);
+        console.log(answer);
+        return answer;
     }
 }
 

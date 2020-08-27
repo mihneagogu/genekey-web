@@ -1,6 +1,5 @@
 console.log(example);
 
-geneKeys[1].query("index");
-geneKeys[1].query("organs");
-geneKeys[1].query("asdasd");
-geneKeys[2].query("siddhi");
+let shadowType: string = geneKeys[64].shadow.query("type");
+let shadowDesc: string = geneKeys[64].shadow.query(" description ");
+let random: string = geneKeys[64].shadow.query(" descriptionasd ");

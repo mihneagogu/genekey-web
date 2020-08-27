@@ -43,34 +43,64 @@ class GeneKey {
         return gk;
     }
     /*
-        Queries the given gene key
+     *  Queries the given gene key
      */
     query(query) {
         // Use object syntax so it's easy to get the properties
-        let gkObj = this;
-        let trimmedQuery = query.trim();
-        let property = Object.keys(gkObj).filter(k => k == trimmedQuery);
-        if (property.length == 1) {
-            // Asked for an actual propery
-            console.log(gkObj[trimmedQuery].toString());
-            return;
-        }
-        console.log("Invalid query");
+        let answer = query_params(query, this);
+        console.log(answer);
+        return answer;
     }
+}
+/*
+ * Queries a given object seeing if the query is one of the properties
+ */
+function query_params(query, queried) {
+    if (!queried) {
+        console.log("made me query a null or undefined object");
+        return "Query on null object";
+    }
+    let trimmedQuery = query.trim();
+    let property = Object.keys(queried).filter(k => k == trimmedQuery);
+    if (property.length == 1) {
+        // Asked for an actual propery
+        let answer = queried[trimmedQuery].toString();
+        return answer;
+    }
+    return "Invalid query";
 }
 var StatusType;
 (function (StatusType) {
-    StatusType[StatusType["SHADOW"] = 0] = "SHADOW";
-    StatusType[StatusType["GIFT"] = 1] = "GIFT";
-    StatusType[StatusType["SIDDHI"] = 2] = "SIDDHI";
+    StatusType["SHADOW"] = "SHADOW";
+    StatusType["GIFT"] = "GIFT";
+    StatusType["SIDDHI"] = "SIDDHI";
 })(StatusType || (StatusType = {}));
 class KeyStatus {
     constructor(type, description) {
         this.type = type;
         this.description = description;
     }
+    typeToString() {
+        if (this.type === StatusType.GIFT) {
+            return "GIFT";
+        }
+        if (this.type === StatusType.SHADOW) {
+            return "SHADOW";
+        }
+        return "SIDDHI";
+    }
     toString() {
         return `${this.type} => ${this.description}`;
+    }
+    query(query) {
+        if (query.trim() === 'type') {
+            let ans = this.typeToString();
+            console.log(ans);
+            return ans;
+        }
+        let answer = query_params(query, this);
+        console.log(answer);
+        return answer;
     }
 }
 function example() {
