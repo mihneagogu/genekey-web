@@ -1,5 +1,6 @@
 class GeneKey implements Queryable {
     index: number;
+    codoneIndex: number;
     shadow: KeyStatus;
     gift: KeyStatus;
     siddhi: KeyStatus;
@@ -10,6 +11,7 @@ class GeneKey implements Queryable {
      */
     public constructor(json:any) {
         this.index = json.index;
+        this.codoneIndex = json.codoneIndex;
         this.shadow = json.shadow;
         this.gift = json.gift;
         this.siddhi = json.siddhi;
@@ -20,9 +22,10 @@ class GeneKey implements Queryable {
     /*
         constructs the object form the items
      */
-    public static fromItems(index: number, shadow: KeyStatus, gift: KeyStatus, siddhi: KeyStatus, organs: string[]): GeneKey {
+    public static fromItems(index: number, codoneIndex: number, shadow: KeyStatus, gift: KeyStatus, siddhi: KeyStatus, organs: string[]): GeneKey {
         let gkObj = {
             index: index,
+            codoneIndex: codoneIndex,
             shadow: shadow,
             gift: gift,
             siddhi: siddhi,
@@ -32,18 +35,22 @@ class GeneKey implements Queryable {
 
     }
 
+    public toJson(): string {
+        return JSON.stringify(this);
+    }
+
 
     /*
         Constructs a deepclone of a genekey
      */
     public deepClone(): GeneKey {
-        let shadowC = new KeyStatus(this.shadow.type, this.shadow.description);
-        let giftC = new KeyStatus(this.gift.type, this.gift.description);
-        let siddhiC = new KeyStatus(this.siddhi.type, this.siddhi.description);
+        let shadowC = new KeyStatus(this.shadow.type, this.shadow.description.slice());
+        let giftC = new KeyStatus(this.gift.type, this.gift.description.slice());
+        let siddhiC = new KeyStatus(this.siddhi.type, this.siddhi.description.slice());
         let organsC: string[] = [];
-        this.organs.forEach((org) => organsC.push(org));
+        this.organs.forEach((org) => organsC.push(org.slice()));
 
-        return GeneKey.fromItems(this.index, shadowC, giftC, siddhiC, organsC);
+        return GeneKey.fromItems(this.index, this.codoneIndex, shadowC, giftC, siddhiC, organsC);
     }
 
     /*
@@ -66,23 +73,6 @@ class GeneKey implements Queryable {
     }
 }
 
-/*
- * Queries a given object seeing if the query is one of the properties
- */
-function query_params(query: string, queried: any): string {
-    if (!queried) {
-        console.log("made me query a null or undefined object");
-        return "Query on null object";
-    }
-    let trimmedQuery: string = query.trim();
-    let property: string[] = Object.keys(queried).filter(k => k == trimmedQuery);
-    if (property.length == 1) {  
-        // Asked for an actual propery
-        let answer: string = queried[trimmedQuery].toString();
-        return answer;
-    }
-    return "Invalid query";
-}
 
 enum StatusType {
     SHADOW = 'SHADOW', GIFT = 'GIFT', SIDDHI = 'SIDDHI'
@@ -127,10 +117,11 @@ function example() {
     let shadow = new KeyStatus(StatusType.SHADOW, "shadow");
     let siddhi = new KeyStatus(StatusType.SIDDHI, "siddhi");
     let organs: string[] = ['plamani', 'inima', 'rinichi'];
-    let index = 1;
+    let index = 0;
 
-    let gk: GeneKey = GeneKey.fromItems(index, shadow, gift, siddhi, organs);
+    let gk: GeneKey = GeneKey.fromItems(index, GKConstants.MaxCodone, shadow, gift, siddhi, organs);
     let json: string = JSON.stringify(gk);
     console.log(json);
 }
+
 
