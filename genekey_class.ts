@@ -1,6 +1,6 @@
 class GeneKey implements Queryable {
     index: number;
-    codoneIndex: number;
+    codone: number;
     shadow: KeyStatus;
     gift: KeyStatus;
     siddhi: KeyStatus;
@@ -11,7 +11,7 @@ class GeneKey implements Queryable {
      */
     public constructor(json:any) {
         this.index = json.index;
-        this.codoneIndex = json.codoneIndex;
+        this.codone = json.codone;
         this.shadow = json.shadow;
         this.gift = json.gift;
         this.siddhi = json.siddhi;
@@ -22,10 +22,10 @@ class GeneKey implements Queryable {
     /*
         constructs the object form the items
      */
-    public static fromItems(index: number, codoneIndex: number, shadow: KeyStatus, gift: KeyStatus, siddhi: KeyStatus, organs: string[]): GeneKey {
+    public static fromItems(index: number, codone: number, shadow: KeyStatus, gift: KeyStatus, siddhi: KeyStatus, organs: string[]): GeneKey {
         let gkObj = {
             index: index,
-            codoneIndex: codoneIndex,
+            codone: codone,
             shadow: shadow,
             gift: gift,
             siddhi: siddhi,
@@ -50,7 +50,7 @@ class GeneKey implements Queryable {
         let organsC: string[] = [];
         this.organs.forEach((org) => organsC.push(org.slice()));
 
-        return GeneKey.fromItems(this.index, this.codoneIndex, shadowC, giftC, siddhiC, organsC);
+        return GeneKey.fromItems(this.index, this.codone, shadowC, giftC, siddhiC, organsC);
     }
 
     /*
@@ -65,9 +65,9 @@ class GeneKey implements Queryable {
     /*
      *  Queries the given gene key
      */
-    public query(query: string): string {
+    public query(query: string): ImplicitQueryRes {
         // Use object syntax so it's easy to get the properties
-        let answer: string = query_params(query, this);
+        let answer: ImplicitQueryRes = query_params(query, this);
         console.log(answer);
         return answer;
     }
@@ -100,13 +100,13 @@ class KeyStatus implements Queryable {
         return `${this.type} => ${this.description}`;
     }
 
-    public query(query: string): string {
+    public query(query: string): ImplicitQueryRes {
         if (query.trim() === 'type') {
             let ans: string = this.typeToString();
             console.log(ans);
-            return ans;
+            return {result: ans, succeeded: true};
         }
-        let answer: string = query_params(query, this);
+        let answer: ImplicitQueryRes = query_params(query, this);
         console.log(answer);
         return answer;
     }

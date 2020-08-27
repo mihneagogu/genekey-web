@@ -1,6 +1,10 @@
-let shadowType: string = geneKeyLibrary[64].shadow.query("type");
-let shadowDesc: string = geneKeyLibrary[64].shadow.query(" description ");
-let random: string = geneKeyLibrary[64].shadow.query(" descriptionasd ");
+let shadowType = geneKeyLibrary[64].shadow.query("type");
+let shadowDesc = geneKeyLibrary[64].shadow.query(" description ");
+let random = geneKeyLibrary[64].shadow.query(" descriptionasd ");
+
+console.log(shadowType);
+console.log(shadowDesc);
+console.log(random);
 
 
 console.log(codoneLibrary);

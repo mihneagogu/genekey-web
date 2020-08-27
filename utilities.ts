@@ -8,17 +8,21 @@ enum GKConstants {
 /*
  * Queries a given object seeing if the query is one of the properties
  */
-function query_params(query: string, queried: any): string {
+interface ImplicitQueryRes {
+    result: string,
+    succeeded: boolean
+}
+function query_params(query: string, queried: any): ImplicitQueryRes {
     if (!queried) {
-        console.log("made me query a null or undefined object");
-        return "Query on null object";
+        console.log('made me query a null or undefined object');
+        return { result: 'Query on null object', succeeded: false};
     }
     let trimmedQuery: string = query.trim();
     let property: string[] = Object.keys(queried).filter(k => k == trimmedQuery);
     if (property.length == 1) {  
         // Asked for an actual propery
         let answer: string = queried[trimmedQuery].toString();
-        return answer;
+        return {result: answer, succeeded: true};
     }
-    return "Invalid query";
+    return {result: 'Invalid query', succeeded: false};
 }

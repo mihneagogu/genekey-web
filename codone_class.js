@@ -8,7 +8,6 @@ class CodoneRing {
     }
     query(query) {
         let ans = query_params(query, this);
-        console.log(ans);
         return ans;
     }
     static fromJson(json) {

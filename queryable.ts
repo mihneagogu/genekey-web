@@ -1,3 +1,3 @@
 interface Queryable {
-    query(query: string): string;
+    query(query: string): ImplicitQueryRes;
 }

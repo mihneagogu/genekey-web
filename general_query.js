@@ -33,10 +33,14 @@ function gkQuery(args) {
         if (id < 1 || id > 64) {
             return 'Invalid index, Genekey must be in [1..=64]';
         }
+        let gk = geneKeyLibrary[id];
         if (!args[1]) {
-            return { gk: geneKeyLibrary[id], msg: geneKeyLibrary[id].toJson() };
+            return { gk: gk, msg: gk.toJson() };
         }
-        return `Genekey ${id} with extra arguments...`;
+        let param = args[1];
+        let queried = gk.query(param);
+        let { result, succeeded } = gk.query(param);
+        return `Genekey ${id} with extra arguments... ${param} => ${result}; succeeded: ${succeeded}`;
     }
     return 'I see you like gene keys, but you gave me no number';
 }

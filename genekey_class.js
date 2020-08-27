@@ -5,7 +5,7 @@ class GeneKey {
      */
     constructor(json) {
         this.index = json.index;
-        this.codoneIndex = json.codoneIndex;
+        this.codone = json.codone;
         this.shadow = json.shadow;
         this.gift = json.gift;
         this.siddhi = json.siddhi;
@@ -14,10 +14,10 @@ class GeneKey {
     /*
         constructs the object form the items
      */
-    static fromItems(index, codoneIndex, shadow, gift, siddhi, organs) {
+    static fromItems(index, codone, shadow, gift, siddhi, organs) {
         let gkObj = {
             index: index,
-            codoneIndex: codoneIndex,
+            codone: codone,
             shadow: shadow,
             gift: gift,
             siddhi: siddhi,
@@ -37,7 +37,7 @@ class GeneKey {
         let siddhiC = new KeyStatus(this.siddhi.type, this.siddhi.description.slice());
         let organsC = [];
         this.organs.forEach((org) => organsC.push(org.slice()));
-        return GeneKey.fromItems(this.index, this.codoneIndex, shadowC, giftC, siddhiC, organsC);
+        return GeneKey.fromItems(this.index, this.codone, shadowC, giftC, siddhiC, organsC);
     }
     /*
         Constructs a deepclone of a genekey with the new specified ID
@@ -84,7 +84,7 @@ class KeyStatus {
         if (query.trim() === 'type') {
             let ans = this.typeToString();
             console.log(ans);
-            return ans;
+            return { result: ans, succeeded: true };
         }
         let answer = query_params(query, this);
         console.log(answer);
