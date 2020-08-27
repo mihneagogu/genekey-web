@@ -32,7 +32,7 @@ class CodoneRing {
     deepClone() {
         let keysC = [];
         this.keys.forEach(k => keysC.push(k));
-        return new CodoneRing(this.index, this.keys, this.name.slice(), this.description.slice());
+        return new CodoneRing(this.index, keysC, this.name.slice(), this.description.slice());
     }
     deepCloneId(id) {
         let codone = this.deepClone();

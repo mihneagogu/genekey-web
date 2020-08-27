@@ -1,6 +1,6 @@
 class CodoneRing implements Queryable {
     index: number;
-    keys: Array<number>;
+    keys: number[];
     name: string;
     description: string;
 
@@ -43,7 +43,7 @@ class CodoneRing implements Queryable {
     public deepClone(): CodoneRing {
         let keysC: number[] = [];
         this.keys.forEach(k => keysC.push(k));
-        return new CodoneRing(this.index, this.keys, this.name.slice(), this.description.slice());
+        return new CodoneRing(this.index, keysC, this.name.slice(), this.description.slice());
     }
 
     public deepCloneId(id: number): CodoneRing {

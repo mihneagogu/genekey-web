@@ -4,7 +4,7 @@ let gk0 = new GeneKey(gkModel[0]);
 
 let geneKeyLibrary: GeneKey[] = [gk0];
 // Push an array of 64 mock genekeys
-for (let i = 1; i <= 64; i++) {
+for (let i = 1; i <= GKConstants.MaxKey; i++) {
     geneKeyLibrary.push(gk0.deeplConeId(i));
 }
 
