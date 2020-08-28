@@ -10,6 +10,17 @@ function generalQuery(query: string): GKQueryResult {
     if (args.length === 0) {
         return 'The query must have at least 1 command';
     }
+
+    if (args[0].toLowerCase() === 'allorgans') {
+        // Corner case when the person wants all keys which have a certain organ related to them
+        if (!args[1]) {
+            return 'You wanted to find all the keys related to an organ, but you gave me no organ!';
+        }
+        let org: string = args[1];
+        let organKeys = geneKeyLibrary.filter(gk => gk.organs.filter(organ => organ === org).length > 0);
+        return { keys: organKeys, msg: `All the keys related to ${org}` };
+
+    }
     switch (args[0].toLowerCase()) {
         case 'genekey':
         case 'gk': {
@@ -37,7 +48,12 @@ interface QueryCodone {
     msg: string
 }
 
-type GKQueryResult = QueryGene | QueryCodone | GeneKey[] |  string;
+interface QueryGKCollection {
+    keys: GeneKey[],
+    msg: string
+}
+
+type GKQueryResult = QueryGene | QueryCodone | QueryGKCollection |  string;
 
 /*
  * Queries "gk ..." with given args
