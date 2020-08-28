@@ -14,7 +14,6 @@ interface ImplicitQueryRes {
 }
 function query_params(query: string, queried: any): ImplicitQueryRes {
     if (!queried) {
-        console.log('made me query a null or undefined object');
         return { result: 'Query on null object', succeeded: false};
     }
     let trimmedQuery: string = query.trim();

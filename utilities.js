@@ -8,7 +8,6 @@ var GKConstants;
 })(GKConstants || (GKConstants = {}));
 function query_params(query, queried) {
     if (!queried) {
-        console.log('made me query a null or undefined object');
         return { result: 'Query on null object', succeeded: false };
     }
     let trimmedQuery = query.trim();

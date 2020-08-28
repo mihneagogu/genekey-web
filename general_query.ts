@@ -1,5 +1,7 @@
-type GeneralQueryResult = GKQueryResult | string;
-function generalQuery(query: string): GeneralQueryResult {
+/*
+ * Produces the result of a given query
+ */
+function generalQuery(query: string): GKQueryResult {
     if (!query) {
         // Either null, undefined, or ''
         return 'Invalid query';
@@ -8,7 +10,7 @@ function generalQuery(query: string): GeneralQueryResult {
     if (args.length === 0) {
         return 'The query must have at least 1 command';
     }
-    switch (args[0]) {
+    switch (args[0].toLowerCase()) {
         case 'genekey':
         case 'gk': {
             return gkQuery(args.slice(1));
@@ -21,21 +23,25 @@ function generalQuery(query: string): GeneralQueryResult {
             return 'I do not recognize this command';
         }
     }
-    return '';
 }
 
 interface QueryGene {
     gk: GeneKey,
+    codone?: CodoneRing,
     msg: string,
 }
 
 interface QueryCodone {
     codone: CodoneRing, 
+    keys?: GeneKey[],
     msg: string
 }
 
-type GKQueryResult = QueryGene | QueryCodone | string;
+type GKQueryResult = QueryGene | QueryCodone | GeneKey[] |  string;
 
+/*
+ * Queries "gk ..." with given args
+ */
 function gkQuery(args: string[]): GKQueryResult {
    if (args[0] && +args[0]) {
        let maybeId = +args[0];
@@ -50,14 +56,62 @@ function gkQuery(args: string[]): GKQueryResult {
        if (!args[1]) {
         return { gk: gk, msg: gk.toJson() };
        }
-       let param: string = args[1];
-       let queried = gk.query(param);
-       let {result, succeeded} = gk.query(param);
-       return `Genekey ${id} with extra arguments... ${param} => ${result}; succeeded: ${succeeded}`;
+       return gkObjQuery(gk, args.splice(1));
    }
     return 'I see you like gene keys, but you gave me no number';
 }
 
+/*
+ * Queries the given genekey with the given args
+ * Ex: if the command run is "gk 32 <arg2> <arg3> ... <argn>"
+ * then this query would be called on the 32nd genekey
+ * with args = {arg2, arg3, ... , argn}
+ * PRE: args is guaranteed to have length of at least 1
+ */
+function gkObjQuery(gk: GeneKey, args: string[]): GKQueryResult {
+    let param: string = args[0].toLowerCase();
+
+    let {result, succeeded} = gk.query(param);
+    if (succeeded) {
+        if (param === 'codone') {
+            // Querying the codone of a genekey, call codoneObjQuery
+            if (!args[1]) {
+                // just asked for the codone, nothing else
+                let codone: CodoneRing = codoneLibrary[gk.codone];
+                return { gk: gk, codone: codone, msg: codone.toJson() };
+            }
+            return codoneObjQuery(codoneLibrary[gk.codone], args.splice(1));
+        }
+        // Just a standard query of the properties
+        return { gk: gk, msg: result };
+    }
+    return `I do not recognize a query of '${param}' on a Genekey`;
+}
+
+/*
+ * Queries "codone ..." with given args
+ */
 function codoneQuery(args: string[]): string {
     return 'codone!';
+}
+
+/*
+ * Queries the given codone with the given args
+ * Ex: if the command run is "codone 15 <arg2> <arg3> ... <argn>"
+ * then this query would be called on the 15th codone
+ * with args = {arg2, arg3, ... , argn}
+ */
+function codoneObjQuery(codone: CodoneRing, args: string[]): GKQueryResult {
+
+    let param: string = args[0].toLowerCase();
+    if (param === 'keys') {
+        let keys: GeneKey[] = codone.keys.map((k) => geneKeyLibrary[k]);
+        let jsonKeys = JSON.stringify(keys);
+        return { codone: codone, keys: keys, msg: jsonKeys };
+    }
+    let {result, succeeded} = codone.query(param);
+    if (!succeeded) {
+        return `Invalid codone query of '${param}'`;
+    }
+    return { codone: codone, msg: result };
 }

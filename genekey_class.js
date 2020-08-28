@@ -1,5 +1,8 @@
 "use strict";
 class GeneKey {
+    // emotii: string[];
+    // partener: number;
+    // dilema: string;
     /*
         constructs the object from the json
      */
@@ -53,7 +56,6 @@ class GeneKey {
     query(query) {
         // Use object syntax so it's easy to get the properties
         let answer = query_params(query, this);
-        console.log(answer);
         return answer;
     }
 }

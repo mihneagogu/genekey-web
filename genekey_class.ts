@@ -5,6 +5,9 @@ class GeneKey implements Queryable {
     gift: KeyStatus;
     siddhi: KeyStatus;
     organs: string[]; // really a set, but JSON doesn't support
+    // emotii: string[];
+    // partener: number;
+    // dilema: string;
 
     /*
         constructs the object from the json
@@ -68,7 +71,6 @@ class GeneKey implements Queryable {
     public query(query: string): ImplicitQueryRes {
         // Use object syntax so it's easy to get the properties
         let answer: ImplicitQueryRes = query_params(query, this);
-        console.log(answer);
         return answer;
     }
 }
