@@ -5,9 +5,9 @@ class GeneKey implements Queryable {
     gift: KeyStatus;
     siddhi: KeyStatus;
     organs: string[]; // really a set, but JSON doesn't support
-    // emotii: string[];
-    // partener: number;
-    // dilema: string;
+    emotions: string[];
+    partner: number;
+    dilemma: string;
 
     /*
         constructs the object from the json
@@ -19,20 +19,26 @@ class GeneKey implements Queryable {
         this.gift = json.gift;
         this.siddhi = json.siddhi;
         this.organs = json.organs;
+        this.emotions = json.emotions;
+        this.partner = json.partner;
+        this.dilemma = json.dilemma;
     }
 
 
     /*
         constructs the object form the items
      */
-    public static fromItems(index: number, codone: number, shadow: KeyStatus, gift: KeyStatus, siddhi: KeyStatus, organs: string[]): GeneKey {
+    public static fromItems(index: number, codone: number, shadow: KeyStatus, gift: KeyStatus, siddhi: KeyStatus, organs: string[], emotions: string[], partner: number, dilemma: string): GeneKey {
         let gkObj = {
             index: index,
             codone: codone,
             shadow: shadow,
             gift: gift,
             siddhi: siddhi,
-            organs: organs
+            organs: organs,
+            emotions: emotions,
+            partner: partner,
+            dilemma: dilemma,
         }
         return new GeneKey(gkObj);
 
@@ -50,10 +56,11 @@ class GeneKey implements Queryable {
         let shadowC = new KeyStatus(this.shadow.type, this.shadow.description.slice());
         let giftC = new KeyStatus(this.gift.type, this.gift.description.slice());
         let siddhiC = new KeyStatus(this.siddhi.type, this.siddhi.description.slice());
-        let organsC: string[] = [];
-        this.organs.forEach((org) => organsC.push(org.slice()));
+        let organsC: string[] = this.organs.map((org) => org.slice());
+        let emotionsC: string[] = this.emotions.map(em => em.slice());
+        let dilemmaC: string = this.dilemma.slice();
 
-        return GeneKey.fromItems(this.index, this.codone, shadowC, giftC, siddhiC, organsC);
+        return GeneKey.fromItems(this.index, this.codone, shadowC, giftC, siddhiC, organsC, emotionsC, this.partner, dilemmaC);
     }
 
     /*
@@ -121,7 +128,7 @@ function example() {
     let organs: string[] = ['plamani', 'inima', 'rinichi'];
     let index = 0;
 
-    let gk: GeneKey = GeneKey.fromItems(index, GKConstants.MaxCodone, shadow, gift, siddhi, organs);
+    let gk: GeneKey = GeneKey.fromItems(index, GKConstants.MaxCodone, shadow, gift, siddhi, organs, ['em1', 'em2'], 23, 'dilemma some');
     let json: string = JSON.stringify(gk);
     console.log(json);
 }

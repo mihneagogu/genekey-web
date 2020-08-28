@@ -75,6 +75,9 @@ function gkObjQuery(gk, args) {
             }
             return codoneObjQuery(codoneLibrary[gk.codone], args.splice(1));
         }
+        if (param === 'partner') {
+            return { gk: gk, msg: geneKeyLibrary[gk.partner].toJson() };
+        }
         // Just a standard query of the properties
         return { gk: gk, msg: result };
     }

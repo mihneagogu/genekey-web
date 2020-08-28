@@ -19,8 +19,8 @@ function generalQuery(query: string): GKQueryResult {
         let org: string = args[1];
         let organKeys = geneKeyLibrary.filter(gk => gk.organs.filter(organ => organ === org).length > 0);
         return { keys: organKeys, msg: `All the keys related to ${org}` };
-
     }
+
     switch (args[0].toLowerCase()) {
         case 'genekey':
         case 'gk': {
@@ -97,6 +97,9 @@ function gkObjQuery(gk: GeneKey, args: string[]): GKQueryResult {
                 return { gk: gk, codone: codone, msg: codone.toJson() };
             }
             return codoneObjQuery(codoneLibrary[gk.codone], args.splice(1));
+        }
+        if (param === 'partner') {
+            return { gk: gk, msg: geneKeyLibrary[gk.partner].toJson() }; 
         }
         // Just a standard query of the properties
         return { gk: gk, msg: result };

@@ -1,6 +1,6 @@
 "use strict";
 // Model genekey for index 0
-let gkModel = [{ "index": 0, "codone": 21, "shadow": { "type": "SHADOW", "description": "shadow" }, "gift": { "type": "GIFT", "description": "gift" }, "siddhi": { "type": "SIDDHI", "description": "siddhi" }, "organs": ["plamani", "inima", "rinichi"] }];
+let gkModel = [{ "index": 0, "codone": 21, "shadow": { "type": "SHADOW", "description": "shadow" }, "gift": { "type": "GIFT", "description": "gift" }, "siddhi": { "type": "SIDDHI", "description": "siddhi" }, "organs": ["plamani", "inima", "rinichi"], "emotions": ["frica", "semne"], "partner": 45, "dilemma": "Eternal dilemma" }];
 let gk0 = new GeneKey(gkModel[0]);
 let geneKeyLibrary = [gk0];
 // Push an array of 64 mock genekeys
