@@ -5,46 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Assignment - Claskkkses & OOP</title>
-    <link rel="stylesheet" href="styles.css" />
-    <script src="utilities.js" defer></script>
-    <script src="queryable.js" defer></script>
-    <script src="codone_class.js" defer></script>
-    <script src="genekey_class.js" defer></script>
-    <script src="codones.js" defer></script>
-    <script src="genekeys.js" defer></script>
-    <script src="general_query.js" defer></script>
-    <script src="app.js" defer></script>
+    <link rel="stylesheet" href="styles/app.css" />
+    <script src="scripts/utilities.js" defer></script>
+    <script src="scripts/queryable.js" defer></script>
+    <script src="scripts/codone_class.js" defer></script>
+    <script src="scripts/genekey_class.js" defer></script>
+    <script src="scripts/codones.js" defer></script>
+    <script src="scripts/genekeys.js" defer></script>
+    <script src="scripts/general_query.js" defer></script>
+    <script src="scripts/app.js" defer></script>
+
   </head>
   <body>
-    <h1>Assignment - Classes & OOP</h1>
-    <ol>
-      <li>
-        Create a "Course" class which has three properties: "title", "length"
-        and "price" (all set up in the constructor). Instantiate the class twice
-        (two dummy courses of your choice). Output the objects to the console.
-      </li>
-      <li>
-        Add two methods to the "Course" class: A method which calculates the
-        length/price value ("how much length do you get for the amount paid")
-        and one method that outputs a nice course summary (including title,
-        length and price). Call these methods thereafter (and output the result
-        to the console).
-      </li>
-      <li>
-        Create two new, more specialized, classes: "PracticalCourse" and
-        "TheoreticalCourse". Both should be based on the "Course" class but
-        "PracticalCourse" should also have a "numOfExercises" property,
-        "TheoreticalCourse" should have a "publish()" method (which just prints
-        something to the console). Instantiate both and use the new AND old
-        properties and methods.
-      </li>
-      <li>
-        Use getters and setters to ensure that the "price" property can only be
-        set to a positive value and is returned with a "$" in front of it.
-      </li>
-      <li>
-        Use private fields to harden the getter/ setter approach from before.
-      </li>
-    </ol>
+    <template id="tooltip">
+      <h2>More Info</h2>
+      <p></p>
+    </template>
+    <header id="main-header">
+      <h1>Project Planner</h1>
+    </header>
+    <section id="active-projects">
+      <header>
+        <h2>Active Projects</h2>
+      </header>
+      <ul>
+        <li
+          id="p1"
+          class="card"
+        >
+          <h2>GeneKey 0</h2>
+          <p>Descr</p>
+          <button class="alt">More Info</button>
+          <button>Finish</button>
+        </li>
+        <li
+          id="p2"
+          data-extra-info="Not really a business topic but still important."
+          class="card"
+        >
+          <h2>Buy Groceries</h2>
+          <p>Don't forget to pick up groceries today.</p>
+          <button class="alt">More Info</button>
+          <button>Finish</button>
+        </li>
+      </ul>
+    </section>
   </body>
 </html>
