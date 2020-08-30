@@ -10,6 +10,25 @@ body {
   margin: 0;
 }
 
+
+div {
+  margin: 10px;
+}
+
+p { 
+  margin: 20px;
+}
+
+
+input {
+    outline-width: 0;
+    border: none;
+    padding: 5px 20px;
+    margin: 0 10px;
+    border-radius: 999px;
+    background-color: #eff2f5;
+}
+
 #main-header {
   width: 100%;
   height: 6rem;

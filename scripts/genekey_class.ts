@@ -79,6 +79,14 @@ class GeneKey implements Queryable {
         // Use object syntax so it's easy to get the properties
         let answer: ImplicitQueryRes = query_params(query, this);
         return answer;
+
+    }
+
+    // Formats the emotions into a single string
+    private formatEmotions(): string {
+        let emotionsText: string = "";
+        this.emotions.forEach(em => emotionsText += `${em} `);
+        return emotionsText;
     }
 }
 

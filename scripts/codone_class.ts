@@ -11,6 +11,7 @@ class CodoneRing implements Queryable {
         this.description = description;
     }
 
+
     query(query: string): ImplicitQueryRes {
         let ans: ImplicitQueryRes = query_params(query, this);
         return ans;
