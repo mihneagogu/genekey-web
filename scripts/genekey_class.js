@@ -62,6 +62,12 @@ class GeneKey {
         let answer = query_params(query, this);
         return answer;
     }
+    // Formats the emotions into a single string
+    formatEmotions() {
+        let emotionsText = "";
+        this.emotions.forEach(em => emotionsText += `${em} `);
+        return emotionsText;
+    }
 }
 var StatusType;
 (function (StatusType) {

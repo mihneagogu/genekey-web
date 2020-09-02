@@ -19,8 +19,17 @@ p {
   margin: 20px;
 }
 
+form {  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:10vh;
+    margin: 10px;
+}
 
-input {
+form > input {
+    height: 5vh;
+    width: 35vh;
     outline-width: 0;
     border: none;
     padding: 5px 20px;
