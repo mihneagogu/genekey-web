@@ -130,8 +130,12 @@ Shadow: NAME\
         const codoneButton = html.querySelector('button#codone-btn')!;
         const partnerButton = html.querySelector('button#partner-btn')!;
 
-        codoneButton.addEventListener('click', () => console.log(this.getCodone()));
-        partnerButton.addEventListener('click', () => console.log(this.getPartner()));
+        codoneButton.addEventListener('click', () => {
+            sectionUl.appendChild(this.getCodone().formatHTML());
+        });
+        partnerButton.addEventListener('click', () => {
+            sectionUl.appendChild(this.getPartner().formatHTML());
+        });
 
         console.log(html);
         console.log(codoneButton, partnerButton);

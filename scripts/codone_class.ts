@@ -75,7 +75,9 @@ class CodoneRing implements Queryable {
             let btn = document.createElement('button');
             btn.id = `key-${index}`;
             btn.textContent = `GeneKey ${this.keys[index]}`;
-            btn.addEventListener('click', () => console.log(this.keyAt(index)));
+            btn.addEventListener('click', () => {
+                sectionUl.appendChild(this.keyAt(index).formatHTML());
+            });
             return btn;
         }
 

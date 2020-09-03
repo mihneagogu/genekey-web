@@ -46,7 +46,7 @@ class CodoneRing {
      */
     formatHTML() {
         let html = document.createElement('li');
-        html.id = `gk-${this.index}`;
+        html.id = `codone-${this.index}`;
         html.className = 'card';
         html.innerHTML = `<h2>Codone ${this.index}</h2>
             <p>Name: ${this.name}</p>
@@ -58,7 +58,9 @@ class CodoneRing {
             let btn = document.createElement('button');
             btn.id = `key-${index}`;
             btn.textContent = `GeneKey ${this.keys[index]}`;
-            btn.addEventListener('click', () => console.log(this.keyAt(index)));
+            btn.addEventListener('click', () => {
+                sectionUl.appendChild(this.keyAt(index).formatHTML());
+            });
             return btn;
         };
         let div = document.createElement('div');
