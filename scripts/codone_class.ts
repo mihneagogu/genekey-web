@@ -35,6 +35,10 @@ class CodoneRing implements Queryable {
         return geneKeys;
     }
 
+    private keyAt(index: number): GeneKey {
+        return geneKeyLibrary[this.keys[index]];
+    }
+
     static examplePrint() {
         let codone: CodoneRing = new CodoneRing(0, [1,2,3], "Codone 0", "I am the 0th codone");
         console.log(codone.toJson());
@@ -50,6 +54,39 @@ class CodoneRing implements Queryable {
         let codone = this.deepClone();
         codone.index = id;
         return codone;
+    }
+
+    /*
+     * Formats an HTML element to be shown based on the codone ring
+     */
+    public formatHTML(): HTMLElement {
+        let html = document.createElement('li');
+        html.id = `codone-${this.index}`;
+        html.className = 'card';
+
+        html.innerHTML = `<h2>Codone ${this.index}</h2>
+            <p>Name: ${this.name}</p>
+            <p>Description: ${this.description}</p>
+            <div>Keys:</div>
+        `;
+
+        // Creates a new button using the key number this.keys[index]
+        let keyButton = (index): HTMLElement => {
+            let btn = document.createElement('button');
+            btn.id = `key-${index}`;
+            btn.textContent = `GeneKey ${this.keys[index]}`;
+            btn.addEventListener('click', () => console.log(this.keyAt(index)));
+            return btn;
+        }
+
+        let div: HTMLElement = document.createElement('div');
+        for (let i = 0; i < this.keys.length; i++) {
+            div.appendChild(keyButton(i));
+        }
+
+        html.appendChild(div);
+
+        return html;
     }
 }
 

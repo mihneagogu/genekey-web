@@ -72,6 +72,16 @@ class GeneKey implements Queryable {
         return gk;
     }
 
+    // Gets the codone associated with this key
+    private getCodone(): CodoneRing {
+        return codoneLibrary[this.codone];
+    }
+
+    // Gets the partner key associated to this genekey
+    private getPartner(): GeneKey {
+        return geneKeyLibrary[this.partner];
+    }
+
     /*
      *  Queries the given gene key
      */
@@ -87,6 +97,45 @@ class GeneKey implements Queryable {
         let emotionsText: string = "";
         this.emotions.forEach(em => emotionsText += `${em} `);
         return emotionsText;
+    }
+
+    /*
+     * Formats an HTML element to be shown based on the genekey
+     */
+    public formatHTML(): HTMLElement {
+        let html = document.createElement('li');
+        html.id = `gk-${this.index}`;
+        html.className = 'card';
+
+        html.innerHTML = `<h2>GeneKey ${this.index}</h2>
+        <button id="codone-btn">Codone ${this.codone}</button>
+        <div>\
+Shadow: NAME\
+            <p>${this.shadow.description}</p>
+        </div>
+        <div>
+            Gift: NAME
+            <p>${this.gift.description}</p>
+        </div>
+        <div>
+            Siddhi: NAME
+            <p>${this.siddhi.description}</p>
+        </div>
+        <p>Emotions: ${this.formatEmotions()}</p>
+        <button id="partner-btn">Partner: GeneKey ${this.partner}</button>
+        <p>Dilemma: ${this.dilemma}</p>
+        `;
+
+        // Add the click listeners for the codone and partner button
+        const codoneButton = html.querySelector('button#codone-btn')!;
+        const partnerButton = html.querySelector('button#partner-btn')!;
+
+        codoneButton.addEventListener('click', () => console.log(this.getCodone()));
+        partnerButton.addEventListener('click', () => console.log(this.getPartner()));
+
+        console.log(html);
+        console.log(codoneButton, partnerButton);
+        return html;
     }
 }
 
