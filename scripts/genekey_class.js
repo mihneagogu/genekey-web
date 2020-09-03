@@ -110,8 +110,6 @@ Shadow: NAME\
         partnerButton.addEventListener('click', () => {
             sectionUl.appendChild(this.getPartner().formatHTML());
         });
-        console.log(html);
-        console.log(codoneButton, partnerButton);
         return html;
     }
 }

@@ -137,8 +137,6 @@ Shadow: NAME\
             sectionUl.appendChild(this.getPartner().formatHTML());
         });
 
-        console.log(html);
-        console.log(codoneButton, partnerButton);
         return html;
     }
 }

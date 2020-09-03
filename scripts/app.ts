@@ -19,9 +19,10 @@ if (queryForm) {
             switch (answer._type) {
                 case GKQueryDiscriminant.QUERY_ERR: {
                     sectionUl.textContent = '';
-                    let err = document.createElement('li');
+                    let err: HTMLElement = document.createElement('li');
                     err.className = 'card';
                     err.textContent = answer.value as string;
+                    sectionUl.appendChild(err);
                     break;
                 }
                 case GKQueryDiscriminant.TYPE_QUERY_GENE: {

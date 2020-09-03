@@ -21,6 +21,7 @@ if (queryForm) {
                     let err = document.createElement('li');
                     err.className = 'card';
                     err.textContent = answer.value;
+                    sectionUl.appendChild(err);
                     break;
                 }
                 case GKQueryDiscriminant.TYPE_QUERY_GENE: {
