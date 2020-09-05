@@ -16,9 +16,11 @@ function generalQuery(query: string): GKQueryResult {
         if (!args[1]) {
             return queryErrorFrom('You wanted to find all the keys related to an organ, but you gave me no organ!');
         }
+
         let org: string = args[1];
         let organKeys = geneKeyLibrary.filter(gk => gk.organs.filter(organ => organ === org).length > 0);
-        return {_type: GKQueryDiscriminant.TYPE_QUERY_GK_COLLECTION, value: { keys: organKeys, msg: `All the keys related to ${org}` }};
+        let collection: QueryGKCollection = new QueryGKCollection(organKeys, `All the keys related to ${org}`, org);
+        return {_type: GKQueryDiscriminant.TYPE_QUERY_GK_COLLECTION, value: collection };
     }
 
     switch (args[0]) {
@@ -48,9 +50,40 @@ interface QueryCodone {
     msg: string
 }
 
-interface QueryGKCollection {
-    keys: GeneKey[],
-    msg: string
+class QueryGKCollection {
+    keys: GeneKey[];
+    msg: string;
+    organ: string;
+
+    constructor(keys: GeneKey[], msg: string, organ: string) {
+        this.keys = keys;
+        this.msg = msg;
+        this.organ = organ;
+    }
+
+    /*
+     * Formats the given QueryGKCollection into an HTML element
+     */
+    formatHTML(): HTMLElement {
+        let html = document.createElement('li');
+        html.className = 'card';
+        html.innerHTML = `<h2>Genekeys related to '${this.organ}'</h2>`;
+
+        let keyButton = (gk: GeneKey): HTMLElement => {
+            let btn = document.createElement('button');
+            btn.textContent = `GeneKey ${gk.index}`;
+            btn.addEventListener('click', () => {
+                sectionUl.appendChild(gk.formatHTML());
+            });
+            return btn;
+        }
+
+        // Add the generated buttons to the page
+        let buttons = this.keys.map(gk => keyButton(gk));
+        buttons.forEach(bt => html.appendChild(bt));
+        return html;
+        
+    }
 }
 
 enum GKQueryDiscriminant {
@@ -59,9 +92,10 @@ enum GKQueryDiscriminant {
     TYPE_QUERY_GK_COLLECTION,
     QUERY_ERR
 }
+
 type GKQueryResult = {
     _type: GKQueryDiscriminant,
-    value: QueryGene | QueryCodone | QueryGKCollection |  string;
+    value: QueryGene | QueryCodone | QueryGKCollection | string;
 }
 
 function queryErrorFrom(err: string): GKQueryResult {

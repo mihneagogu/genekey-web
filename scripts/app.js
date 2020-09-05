@@ -35,7 +35,8 @@ if (queryForm) {
                     break;
                 }
                 default: {
-                    console.log("ALL KEYS RELATED TO ORGAN");
+                    let ans = answer.value;
+                    sectionUl.appendChild(ans.formatHTML());
                     break;
                 }
             }

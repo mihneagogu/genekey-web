@@ -18,7 +18,8 @@ function generalQuery(query) {
         }
         let org = args[1];
         let organKeys = geneKeyLibrary.filter(gk => gk.organs.filter(organ => organ === org).length > 0);
-        return { _type: GKQueryDiscriminant.TYPE_QUERY_GK_COLLECTION, value: { keys: organKeys, msg: `All the keys related to ${org}` } };
+        let collection = new QueryGKCollection(organKeys, `All the keys related to ${org}`, org);
+        return { _type: GKQueryDiscriminant.TYPE_QUERY_GK_COLLECTION, value: collection };
     }
     switch (args[0]) {
         case 'genekey':
@@ -32,6 +33,33 @@ function generalQuery(query) {
         default: {
             return queryErrorFrom('I do not recognize this command');
         }
+    }
+}
+class QueryGKCollection {
+    constructor(keys, msg, organ) {
+        this.keys = keys;
+        this.msg = msg;
+        this.organ = organ;
+    }
+    /*
+     * Formats the given QueryGKCollection into an HTML element
+     */
+    formatHTML() {
+        let html = document.createElement('li');
+        html.className = 'card';
+        html.innerHTML = `<h2>Genekeys related to ${this.organ}</h2>`;
+        let keyButton = (gk) => {
+            let btn = document.createElement('button');
+            btn.textContent = `GeneKey ${gk.index}`;
+            btn.addEventListener('click', () => {
+                sectionUl.appendChild(gk.formatHTML());
+            });
+            return btn;
+        };
+        // Add the generated buttons to the page
+        let buttons = this.keys.map(gk => keyButton(gk));
+        buttons.forEach(bt => html.appendChild(bt));
+        return html;
     }
 }
 var GKQueryDiscriminant;

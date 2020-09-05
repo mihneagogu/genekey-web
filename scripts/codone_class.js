@@ -63,11 +63,9 @@ class CodoneRing {
             });
             return btn;
         };
-        let div = document.createElement('div');
         for (let i = 0; i < this.keys.length; i++) {
-            div.appendChild(keyButton(i));
+            html.appendChild(keyButton(i));
         }
-        html.appendChild(div);
         return html;
     }
 }
