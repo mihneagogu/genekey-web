@@ -99,9 +99,17 @@ class GeneKey implements Queryable {
         return emotionsText;
     }
 
+
+    // Formats the emotions into a single string
+    private formatOrgans(): string {
+        let organsText: string = "";
+        this.organs.forEach(org => organsText += `${org} `);
+        return organsText;
+    }
     /*
      * Formats an HTML element to be shown based on the genekey
      */
+
     public formatHTML(): HTMLElement {
         let html = document.createElement('li');
         html.id = `gk-${this.index}`;
@@ -122,6 +130,7 @@ Shadow: NAME\
             <p>${this.siddhi.description}</p>
         </div>
         <p>Emotions: ${this.formatEmotions()}</p>
+        <p>Organs: ${this.formatOrgans()}</p>
         <button id="partner-btn">Partner: GeneKey ${this.partner}</button>
         <p>Dilemma: ${this.dilemma}</p>
         `;

@@ -76,6 +76,12 @@ class GeneKey {
         this.emotions.forEach(em => emotionsText += `${em} `);
         return emotionsText;
     }
+    // Formats the emotions into a single string
+    formatOrgans() {
+        let organsText = "";
+        this.organs.forEach(org => organsText += `${org} `);
+        return organsText;
+    }
     /*
      * Formats an HTML element to be shown based on the genekey
      */
@@ -98,6 +104,7 @@ Shadow: NAME\
             <p>${this.siddhi.description}</p>
         </div>
         <p>Emotions: ${this.formatEmotions()}</p>
+        <p>Organs: ${this.formatOrgans()}</p>
         <button id="partner-btn">Partner: GeneKey ${this.partner}</button>
         <p>Dilemma: ${this.dilemma}</p>
         `;

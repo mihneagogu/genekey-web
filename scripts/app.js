@@ -43,8 +43,4 @@ if (queryForm) {
         }
     }, false);
 }
-const newKey = geneKeyLibrary[32].formatHTML();
-const newCodone = codoneLibrary[15].formatHTML();
-sectionUl.appendChild(newKey);
-sectionUl.appendChild(newCodone);
 //# sourceMappingURL=app.js.map

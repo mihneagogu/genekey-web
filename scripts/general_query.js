@@ -47,7 +47,7 @@ class QueryGKCollection {
     formatHTML() {
         let html = document.createElement('li');
         html.className = 'card';
-        html.innerHTML = `<h2>Genekeys related to ${this.organ}</h2>`;
+        html.innerHTML = `<h2>Genekeys related to '${this.organ}'</h2>`;
         let keyButton = (gk) => {
             let btn = document.createElement('button');
             btn.textContent = `GeneKey ${gk.index}`;
