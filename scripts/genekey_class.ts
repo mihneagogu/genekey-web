@@ -1,3 +1,7 @@
+interface Channel {
+    keys: [number, number];
+    name: string;
+}
 class GeneKey implements Queryable {
     index: number;
     codone: number;
@@ -8,6 +12,9 @@ class GeneKey implements Queryable {
     emotions: string[];
     partner: number;
     dilemma: string;
+    aminoacid: string;
+    keywords: string[];
+    channel: Channel;
 
     /*
         constructs the object from the json
@@ -22,13 +29,18 @@ class GeneKey implements Queryable {
         this.emotions = json.emotions;
         this.partner = json.partner;
         this.dilemma = json.dilemma;
+        this.aminoacid = json.aminoacid;
+        this.keywords = json.keywords;
+        this.channel = json.channel;
     }
 
 
     /*
         constructs the object form the items
      */
-    public static fromItems(index: number, codone: number, shadow: KeyStatus, gift: KeyStatus, siddhi: KeyStatus, organs: string[], emotions: string[], partner: number, dilemma: string): GeneKey {
+    public static fromItems(index: number, codone: number, shadow: KeyStatus, gift: KeyStatus, siddhi: KeyStatus, 
+                            organs: string[], emotions: string[], partner: number, dilemma: string,
+                            aminoacid: string, keywords: string[], channel: Channel): GeneKey {
         let gkObj = {
             index: index,
             codone: codone,
@@ -39,6 +51,9 @@ class GeneKey implements Queryable {
             emotions: emotions,
             partner: partner,
             dilemma: dilemma,
+            aminoacid: aminoacid,
+            keywords: keywords,
+            channel: channel,
         }
         return new GeneKey(gkObj);
 
@@ -53,14 +68,18 @@ class GeneKey implements Queryable {
         Constructs a deepclone of a genekey
      */
     public deepClone(): GeneKey {
-        let shadowC = new KeyStatus(this.shadow.type, this.shadow.description.slice());
-        let giftC = new KeyStatus(this.gift.type, this.gift.description.slice());
-        let siddhiC = new KeyStatus(this.siddhi.type, this.siddhi.description.slice());
-        let organsC: string[] = this.organs.map((org) => org.slice());
-        let emotionsC: string[] = this.emotions.map(em => em.slice());
-        let dilemmaC: string = this.dilemma.slice();
+        const shadowC = new KeyStatus(this.shadow.type, this.shadow.description.slice());
+        const giftC = new KeyStatus(this.gift.type, this.gift.description.slice());
+        const siddhiC = new KeyStatus(this.siddhi.type, this.siddhi.description.slice());
+        const organsC: string[] = this.organs.map((org) => org.slice());
+        const emotionsC: string[] = this.emotions.map(em => em.slice());
+        const dilemmaC: string = this.dilemma.slice();
+        const aminoacid: string = this.aminoacid.slice();
+        const { keys, name } = this.channel;
+        const channel_c: Channel = { keys: [keys[0], keys[1]], name: name.slice() };
+        const keywords_c: string[] = this.keywords.map(s => s.slice());
 
-        return GeneKey.fromItems(this.index, this.codone, shadowC, giftC, siddhiC, organsC, emotionsC, this.partner, dilemmaC);
+        return GeneKey.fromItems(this.index, this.codone, shadowC, giftC, siddhiC, organsC, emotionsC, this.partner, dilemmaC, aminoacid, keywords_c, channel_c);
     }
 
     /*
@@ -195,8 +214,11 @@ function example() {
     let siddhi = new KeyStatus(StatusType.SIDDHI, "siddhi");
     let organs: string[] = ['plamani', 'inima', 'rinichi'];
     let index = 0;
+    let aminoacid: string = 'valine';
+    let keywords: string[] = ['discipline', 'influence'];
+    let channel: Channel = {keys: [index, 7], name: 'Channel of facilitation'};
 
-    let gk: GeneKey = GeneKey.fromItems(index, GKConstants.MaxCodone, shadow, gift, siddhi, organs, ['em1', 'em2'], 23, 'dilemma some');
+    let gk: GeneKey = GeneKey.fromItems(index, GKConstants.MaxCodone, shadow, gift, siddhi, organs, ['em1', 'em2'], 23, 'dilemma some', aminoacid, keywords, channel);
     let json: string = JSON.stringify(gk);
     console.log(json);
 }

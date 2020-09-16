@@ -1,0 +1,23 @@
+{
+    "index": 64,
+    "codone": 12,
+    "shadow": {
+        "type": "SHADOW",
+        "description": "descrieree ...."
+    },
+    "siddhi": {
+        "type": "SIDDHI",
+        "description": "descrieree ...."
+    },
+    "gift": {
+        "type": "GIFT",
+        "description": "descrieree ...."
+    },
+    "organs": ["plamani", "inima", "rinichi"],
+    "emotions": ["frica", "dignity"],
+    "partner": 45,
+    "dilemma": "ceva dilema",
+    "aminoacid": "valine",
+    "keywords": ["virtue", "dignity"],
+    "channel": {"keys": [0, 64], "name": "some channel name"}
+}

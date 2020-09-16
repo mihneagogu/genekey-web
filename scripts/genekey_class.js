@@ -13,11 +13,14 @@ class GeneKey {
         this.emotions = json.emotions;
         this.partner = json.partner;
         this.dilemma = json.dilemma;
+        this.aminoacid = json.aminoacid;
+        this.keywords = json.keywords;
+        this.channel = json.channel;
     }
     /*
         constructs the object form the items
      */
-    static fromItems(index, codone, shadow, gift, siddhi, organs, emotions, partner, dilemma) {
+    static fromItems(index, codone, shadow, gift, siddhi, organs, emotions, partner, dilemma, aminoacid, keywords, channel) {
         let gkObj = {
             index: index,
             codone: codone,
@@ -28,6 +31,9 @@ class GeneKey {
             emotions: emotions,
             partner: partner,
             dilemma: dilemma,
+            aminoacid: aminoacid,
+            keywords: keywords,
+            channel: channel,
         };
         return new GeneKey(gkObj);
     }
@@ -38,13 +44,17 @@ class GeneKey {
         Constructs a deepclone of a genekey
      */
     deepClone() {
-        let shadowC = new KeyStatus(this.shadow.type, this.shadow.description.slice());
-        let giftC = new KeyStatus(this.gift.type, this.gift.description.slice());
-        let siddhiC = new KeyStatus(this.siddhi.type, this.siddhi.description.slice());
-        let organsC = this.organs.map((org) => org.slice());
-        let emotionsC = this.emotions.map(em => em.slice());
-        let dilemmaC = this.dilemma.slice();
-        return GeneKey.fromItems(this.index, this.codone, shadowC, giftC, siddhiC, organsC, emotionsC, this.partner, dilemmaC);
+        const shadowC = new KeyStatus(this.shadow.type, this.shadow.description.slice());
+        const giftC = new KeyStatus(this.gift.type, this.gift.description.slice());
+        const siddhiC = new KeyStatus(this.siddhi.type, this.siddhi.description.slice());
+        const organsC = this.organs.map((org) => org.slice());
+        const emotionsC = this.emotions.map(em => em.slice());
+        const dilemmaC = this.dilemma.slice();
+        const aminoacid = this.aminoacid.slice();
+        const { keys, name } = this.channel;
+        const channel_c = { keys: [keys[0], keys[1]], name: name.slice() };
+        const keywords_c = this.keywords.map(s => s.slice());
+        return GeneKey.fromItems(this.index, this.codone, shadowC, giftC, siddhiC, organsC, emotionsC, this.partner, dilemmaC, aminoacid, keywords_c, channel_c);
     }
     /*
         Constructs a deepclone of a genekey with the new specified ID
@@ -160,7 +170,10 @@ function example() {
     let siddhi = new KeyStatus(StatusType.SIDDHI, "siddhi");
     let organs = ['plamani', 'inima', 'rinichi'];
     let index = 0;
-    let gk = GeneKey.fromItems(index, GKConstants.MaxCodone, shadow, gift, siddhi, organs, ['em1', 'em2'], 23, 'dilemma some');
+    let aminoacid = 'valine';
+    let keywords = ['discipline', 'influence'];
+    let channel = { keys: [index, 7], name: 'Channel of facilitation' };
+    let gk = GeneKey.fromItems(index, GKConstants.MaxCodone, shadow, gift, siddhi, organs, ['em1', 'em2'], 23, 'dilemma some', aminoacid, keywords, channel);
     let json = JSON.stringify(gk);
     console.log(json);
 }
