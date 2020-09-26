@@ -3,7 +3,7 @@
     "target": "es6",
     "resolveJsonModule": true,
     "noImplicitAny": false,
-    "lib": ["es6", "DOM"],
+    "lib": ["es6", "es2017", "DOM"],
     "module": "commonjs", 
     "strict": true,      
     "esModuleInterop": true, 

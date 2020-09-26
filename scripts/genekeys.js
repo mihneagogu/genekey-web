@@ -16,6 +16,16 @@ for (let i = 1; i <= GKConstants.MaxKey; i++) {
     gk.organs.forEach(org => addToLibrary(organLibrary, org, gk.index));
     gk.keywords.forEach(kw => addToLibrary(keywordLibrary, kw, gk.index));
 }
+const sortedKeywords = Object.entries(keywordLibrary).sort(([k1, arr1], [k2, arr2]) => {
+    if (k1 < k2) {
+        return -1;
+    }
+    if (k1 === k2) {
+        return 0;
+    }
+    return 1;
+});
+console.log(sortedKeywords);
 function addToLibrary(library, property, toAdd) {
     const keys = library[property];
     if (!keys) {

@@ -1,1 +1,4 @@
-1. Use some UI from academind maybe for buttons and what not?
+- Put the libraries on display using some simple buttons (libraries already exist, just need the button to show them)
+- Library pentru shadow/gift/siddhi?
+- Query invers pt aminoacid, keywords, dilema
+
