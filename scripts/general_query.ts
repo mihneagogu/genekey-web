@@ -89,6 +89,9 @@ class QueryGKCollection {
 enum GKQueryDiscriminant {
     TYPE_QUERY_GENE,
     TYPE_QUERY_CODONE,
+    TYPE_CODONE_BLUES,
+    TYPE_PARTNER_BLUES,
+    TYPE_CHANNEL_BLUES,
     TYPE_QUERY_GK_COLLECTION,
     QUERY_ERR
 }
@@ -142,12 +145,24 @@ function gkObjQuery(gk: GeneKey, args: string[]): GKQueryResult {
             if (!args[1]) {
                 // just asked for the codone, nothing else
                 let codone: CodoneRing = codoneLibrary[gk.codone];
-                return {_type: GKQueryDiscriminant.TYPE_QUERY_GENE, value: { gk: gk, codone: codone, msg: codone.toJson() }};
+                // format all the blue attributes from the children
+                return {_type: GKQueryDiscriminant.TYPE_CODONE_BLUES, value: { gk: gk, codone: codone, msg: codone.toJson() }};
             }
             return codoneObjQuery(codoneLibrary[gk.codone], args.splice(1));
         }
         if (param === 'partner') {
-            return {_type: GKQueryDiscriminant.TYPE_QUERY_GENE, value: { gk: gk, msg: geneKeyLibrary[gk.partner].toJson() }};
+            if (!args[1]) {
+                // just want the partner, so format blues
+                return {_type: GKQueryDiscriminant.TYPE_PARTNER_BLUES, value: { gk: gk, msg: result }};
+            }
+            return gkObjQuery(gk.getPartner(), args.splice(1));
+        }
+        if (param === 'channel') {
+            if (args[1]) {
+                return queryErrorFrom('You cannot ask for anything more when trying to get a channel \
+                              Try "gk 12 channel"');
+            }
+            return {_type: GKQueryDiscriminant.TYPE_CHANNEL_BLUES, value: { gk: gk, msg: result }};
         }
         // Just a standard query of the properties
         return {_type: GKQueryDiscriminant.TYPE_QUERY_GENE, value: { gk: gk, msg: result }};

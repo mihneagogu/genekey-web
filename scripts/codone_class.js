@@ -6,6 +6,14 @@ class CodoneRing {
         this.name = name,
             this.description = description;
     }
+    /*
+     * Formats the blue attributes from all the gene keys
+     */
+    formatBlues() {
+        let div = document.createElement('div');
+        this.getGeneKeys().forEach(gk => div.appendChild(gk.blues()));
+        return div;
+    }
     query(query) {
         let ans = query_params(query, this);
         return ans;

@@ -66,8 +66,11 @@ var GKQueryDiscriminant;
 (function (GKQueryDiscriminant) {
     GKQueryDiscriminant[GKQueryDiscriminant["TYPE_QUERY_GENE"] = 0] = "TYPE_QUERY_GENE";
     GKQueryDiscriminant[GKQueryDiscriminant["TYPE_QUERY_CODONE"] = 1] = "TYPE_QUERY_CODONE";
-    GKQueryDiscriminant[GKQueryDiscriminant["TYPE_QUERY_GK_COLLECTION"] = 2] = "TYPE_QUERY_GK_COLLECTION";
-    GKQueryDiscriminant[GKQueryDiscriminant["QUERY_ERR"] = 3] = "QUERY_ERR";
+    GKQueryDiscriminant[GKQueryDiscriminant["TYPE_CODONE_BLUES"] = 2] = "TYPE_CODONE_BLUES";
+    GKQueryDiscriminant[GKQueryDiscriminant["TYPE_PARTNER_BLUES"] = 3] = "TYPE_PARTNER_BLUES";
+    GKQueryDiscriminant[GKQueryDiscriminant["TYPE_CHANNEL_BLUES"] = 4] = "TYPE_CHANNEL_BLUES";
+    GKQueryDiscriminant[GKQueryDiscriminant["TYPE_QUERY_GK_COLLECTION"] = 5] = "TYPE_QUERY_GK_COLLECTION";
+    GKQueryDiscriminant[GKQueryDiscriminant["QUERY_ERR"] = 6] = "QUERY_ERR";
 })(GKQueryDiscriminant || (GKQueryDiscriminant = {}));
 function queryErrorFrom(err) {
     return { _type: GKQueryDiscriminant.QUERY_ERR, value: err };
@@ -109,12 +112,24 @@ function gkObjQuery(gk, args) {
             if (!args[1]) {
                 // just asked for the codone, nothing else
                 let codone = codoneLibrary[gk.codone];
-                return { _type: GKQueryDiscriminant.TYPE_QUERY_GENE, value: { gk: gk, codone: codone, msg: codone.toJson() } };
+                // format all the blue attributes from the children
+                return { _type: GKQueryDiscriminant.TYPE_CODONE_BLUES, value: { gk: gk, codone: codone, msg: codone.toJson() } };
             }
             return codoneObjQuery(codoneLibrary[gk.codone], args.splice(1));
         }
         if (param === 'partner') {
-            return { _type: GKQueryDiscriminant.TYPE_QUERY_GENE, value: { gk: gk, msg: geneKeyLibrary[gk.partner].toJson() } };
+            if (!args[1]) {
+                // just want the partner, so format blues
+                return { _type: GKQueryDiscriminant.TYPE_PARTNER_BLUES, value: { gk: gk, msg: result } };
+            }
+            return gkObjQuery(gk.getPartner(), args.splice(1));
+        }
+        if (param === 'channel') {
+            if (args[1]) {
+                return queryErrorFrom('You cannot ask for anything more when trying to get a channel \
+                              Try "gk 12 channel"');
+            }
+            return { _type: GKQueryDiscriminant.TYPE_CHANNEL_BLUES, value: { gk: gk, msg: result } };
         }
         // Just a standard query of the properties
         return { _type: GKQueryDiscriminant.TYPE_QUERY_GENE, value: { gk: gk, msg: result } };

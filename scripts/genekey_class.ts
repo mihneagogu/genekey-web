@@ -2,6 +2,20 @@ interface Channel {
     keys: [number, number];
     name: string;
 }
+
+function formatChannel(chan: Channel): HTMLElement {
+    const div: HTMLElement = document.createElement('div');
+    const [left, right] = chan.keys;
+    const blueLeft = geneKeyLibrary[left].blues();
+    const blueRight = geneKeyLibrary[right].blues();
+
+    div.innerHTML = `<h3>${chan.name}</h3>`;
+    div.appendChild(blueLeft);
+    div.appendChild(blueRight);
+
+    return div;
+}
+
 class GeneKey implements Queryable {
     index: number;
     codone: number;
@@ -32,6 +46,52 @@ class GeneKey implements Queryable {
         this.aminoacid = json.aminoacid;
         this.keywords = json.keywords;
         this.channel = json.channel;
+    }
+
+    public bluesWithChannel(): HTMLElement {
+        return formatChannel(this.channel);
+    }
+
+    public bluesWithPartner(): HTMLElement {
+        let div: HTMLElement = document.createElement('div');
+        const thisBlue = this.blues();
+        const partnerBlue = this.getPartner().blues();
+        div.appendChild(thisBlue);
+        div.appendChild(partnerBlue);
+        return div;
+    }
+
+    /*
+     * Returns the blue attributes from a genekey, 
+     * as a HTML element
+     */
+    public blues(): HTMLElement {
+        let html = document.createElement('li');
+        html.id = `gk-${this.index}`;
+        html.className = 'card';
+
+        html.innerHTML = `<h2>GeneKey ${this.index}</h2>
+        <div>\
+Shadow: NAME\
+            <p>${this.shadow.description}</p>
+        </div>
+        <div>
+            Gift: NAME
+            <p>${this.gift.description}</p>
+        </div>
+        <div>
+            Siddhi: NAME
+            <p>${this.siddhi.description}</p>
+        </div>
+        <p>Emotions: ${this.formatEmotions()}</p>
+        <p>Organs: ${this.formatOrgans()}</p>
+        <p>Dilemma: ${this.dilemma}</p>
+        <p>Aminoacid: ${this.aminoacid}</p>
+        <p>Keywords: ${this.formatKeywords()}</p>
+        `;
+
+        return html;
+        
     }
 
 
@@ -97,7 +157,7 @@ class GeneKey implements Queryable {
     }
 
     // Gets the partner key associated to this genekey
-    private getPartner(): GeneKey {
+    public  getPartner(): GeneKey {
         return geneKeyLibrary[this.partner];
     }
 
@@ -125,6 +185,15 @@ class GeneKey implements Queryable {
         this.organs.forEach(org => organsText += `${org} `);
         return organsText;
     }
+
+
+    // Fromats all the keywords into one string
+    private formatKeywords(): string {
+        let keywords: string = "";
+        this.keywords.forEach(kw => keywords += `${kw} `);;
+        return keywords;
+    }
+
     /*
      * Formats an HTML element to be shown based on the genekey
      */
@@ -148,6 +217,9 @@ Shadow: NAME\
             Siddhi: NAME
             <p>${this.siddhi.description}</p>
         </div>
+        <p>Aminoacid: ${this.aminoacid}</p>
+        <p>Keywords: ${this.formatKeywords()}</p>
+        <p>Channel: ${this.channel.name}</p>
         <p>Emotions: ${this.formatEmotions()}</p>
         <p>Organs: ${this.formatOrgans()}</p>
         <button id="partner-btn">Partner: GeneKey ${this.partner}</button>

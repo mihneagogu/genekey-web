@@ -34,6 +34,21 @@ if (queryForm) {
                     sectionUl.appendChild(ans.codone.formatHTML());
                     break;
                 }
+                case GKQueryDiscriminant.TYPE_CODONE_BLUES: {
+                    let ans = answer.value;
+                    sectionUl.appendChild(ans.codone.formatBlues());
+                    break;
+                }
+                case GKQueryDiscriminant.TYPE_PARTNER_BLUES: {
+                    const ans = answer.value;
+                    sectionUl.appendChild(ans.gk.bluesWithPartner());
+                    break;
+                }
+                case GKQueryDiscriminant.TYPE_CHANNEL_BLUES: {
+                    const ans = answer.value;
+                    sectionUl.appendChild(ans.gk.bluesWithChannel());
+                    break;
+                }
                 default: {
                     let ans = answer.value;
                     sectionUl.appendChild(ans.formatHTML());

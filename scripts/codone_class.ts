@@ -12,6 +12,15 @@ class CodoneRing implements Queryable {
     }
 
 
+    /* 
+     * Formats the blue attributes from all the gene keys 
+     */
+    public formatBlues(): HTMLElement {
+        let div: HTMLElement = document.createElement('div');
+        this.getGeneKeys().forEach(gk => div.appendChild(gk.blues()));
+        return div;
+    }
+
     query(query: string): ImplicitQueryRes {
         let ans: ImplicitQueryRes = query_params(query, this);
         return ans;
