@@ -37,9 +37,9 @@ class GeneKey implements Queryable {
     public constructor(json:any) {
         this.index = json.index;
         this.codone = json.codone;
-        this.shadow = json.shadow;
-        this.gift = json.gift;
-        this.siddhi = json.siddhi;
+        this.shadow = KeyStatus.fromJson(json.shadow);
+        this.gift = KeyStatus.fromJson(json.gift);
+        this.siddhi = KeyStatus.fromJson(json.siddhi);
         this.organs = json.organs;
         this.emotions = json.emotions;
         this.partner = json.partner;
@@ -73,24 +73,18 @@ class GeneKey implements Queryable {
         html.className = 'card';
 
         html.innerHTML = `<h2>GeneKey ${this.index}</h2>
-        <div>\
-Shadow: NAME\
-            <p>${this.shadow.description}</p>
-        </div>
-        <div>
-            Gift: NAME
-            <p>${this.gift.description}</p>
-        </div>
-        <div>
-            Siddhi: NAME
-            <p>${this.siddhi.description}</p>
-        </div>
         <p>Emotions: ${this.formatEmotions()}</p>
         <p>Organs: ${this.formatOrgans()}</p>
         <p>Dilemma: ${this.dilemma}</p>
         <p>Aminoacid: ${this.aminoacid}</p>
         <p>Keywords: ${this.formatKeywords()}</p>
         `;
+
+        console.log("binded to");
+        console.log(this.siddhi);
+        html.appendChild(this.siddhi.toButton(html));
+        html.appendChild(this.gift.toButton(html));
+        html.appendChild(this.shadow.toButton(html));
 
         return html;
         
@@ -106,9 +100,9 @@ Shadow: NAME\
         let gkObj = {
             index: index,
             codone: codone,
-            shadow: shadow,
-            gift: gift,
-            siddhi: siddhi,
+            shadow: KeyStatus.fromJson(shadow),
+            gift: KeyStatus.fromJson(gift),
+            siddhi: KeyStatus.fromJson(siddhi),
             organs: organs,
             emotions: emotions,
             partner: partner,
@@ -209,18 +203,6 @@ Shadow: NAME\
 
         html.innerHTML = `<h2>GeneKey ${this.index}</h2>
         <button id="codone-btn">Codone ${this.codone}</button>
-        <div>\
-Shadow: NAME\
-            <p>${this.shadow.description}</p>
-        </div>
-        <div>
-            Gift: NAME
-            <p>${this.gift.description}</p>
-        </div>
-        <div>
-            Siddhi: NAME
-            <p>${this.siddhi.description}</p>
-        </div>
         <p>Aminoacid: ${this.aminoacid}</p>
         <p>Iching: ${this.iching}</p>
         <p>Keywords: ${this.formatKeywords()}</p>
@@ -230,6 +212,10 @@ Shadow: NAME\
         <button id="partner-btn">Partner: GeneKey ${this.partner}</button>
         <p>Dilemma: ${this.dilemma}</p>
         `;
+
+        html.appendChild(this.siddhi.toButton(html));
+        html.appendChild(this.gift.toButton(html));
+        html.appendChild(this.shadow.toButton(html));
 
         // Add the click listeners for the codone and partner button
         const codoneButton = html.querySelector('button#codone-btn')!;
@@ -259,6 +245,12 @@ class KeyStatus implements Queryable {
         this.description = description;
     }
 
+    public static fromJson(json: any): KeyStatus {
+        const type: StatusType = json.type as StatusType;
+        const desc: string = json.description as string;
+        return new KeyStatus(type, desc);
+    }
+
     public typeToString(): string {
         if (this.type === StatusType.GIFT) {
             return "GIFT";
@@ -267,6 +259,34 @@ class KeyStatus implements Queryable {
             return "SHADOW";
         }
         return "SIDDHI";
+    }
+
+    // Formats the keystatus so that it shows description on click
+    public toButton(gkElement: HTMLElement): HTMLElement {
+
+        const btn: HTMLElement = document.createElement('button');
+
+        btn.className = 'alt';
+        btn.textContent = this.typeToString();
+
+        const desc: HTMLElement = document.createElement('p');
+        const id: string = `${this.type.toString()}-para`;
+        desc.id = id;
+        desc.textContent = this.description;
+
+        btn.addEventListener('click', () => {
+            if (gkElement.querySelector(`#${id}`)) {
+                if (desc.style.display === 'none') {
+                    desc.style.display = 'block';
+                    return;
+                }
+                desc.style.display = 'none';
+            } else {
+                gkElement.appendChild(desc);
+            }
+        }); 
+
+        return btn;
     }
 
     public toString(): string {
