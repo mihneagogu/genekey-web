@@ -27,6 +27,7 @@ class GeneKey implements Queryable {
     partner: number;
     dilemma: string;
     aminoacid: string;
+    iching: string;
     keywords: string[];
     channel: Channel;
 
@@ -44,6 +45,7 @@ class GeneKey implements Queryable {
         this.partner = json.partner;
         this.dilemma = json.dilemma;
         this.aminoacid = json.aminoacid;
+        this.iching = json.iching;
         this.keywords = json.keywords;
         this.channel = json.channel;
     }
@@ -100,7 +102,7 @@ Shadow: NAME\
      */
     public static fromItems(index: number, codone: number, shadow: KeyStatus, gift: KeyStatus, siddhi: KeyStatus, 
                             organs: string[], emotions: string[], partner: number, dilemma: string,
-                            aminoacid: string, keywords: string[], channel: Channel): GeneKey {
+                            aminoacid: string, iching: string, keywords: string[], channel: Channel): GeneKey {
         let gkObj = {
             index: index,
             codone: codone,
@@ -112,6 +114,7 @@ Shadow: NAME\
             partner: partner,
             dilemma: dilemma,
             aminoacid: aminoacid,
+            iching: iching,
             keywords: keywords,
             channel: channel,
         }
@@ -138,8 +141,9 @@ Shadow: NAME\
         const { keys, name } = this.channel;
         const channel_c: Channel = { keys: [keys[0], keys[1]], name: name.slice() };
         const keywords_c: string[] = this.keywords.map(s => s.slice());
+        const iching_c: string = this.iching.slice();
 
-        return GeneKey.fromItems(this.index, this.codone, shadowC, giftC, siddhiC, organsC, emotionsC, this.partner, dilemmaC, aminoacid, keywords_c, channel_c);
+        return GeneKey.fromItems(this.index, this.codone, shadowC, giftC, siddhiC, organsC, emotionsC, this.partner, dilemmaC, aminoacid, iching_c, keywords_c, channel_c);
     }
 
     /*
@@ -218,6 +222,7 @@ Shadow: NAME\
             <p>${this.siddhi.description}</p>
         </div>
         <p>Aminoacid: ${this.aminoacid}</p>
+        <p>Iching: ${this.iching}</p>
         <p>Keywords: ${this.formatKeywords()}</p>
         <p>Channel: ${this.channel.name}</p>
         <p>Emotions: ${this.formatEmotions()}</p>
@@ -290,7 +295,7 @@ function example() {
     let keywords: string[] = ['discipline', 'influence'];
     let channel: Channel = {keys: [index, 7], name: 'Channel of facilitation'};
 
-    let gk: GeneKey = GeneKey.fromItems(index, GKConstants.MaxCodone, shadow, gift, siddhi, organs, ['em1', 'em2'], 23, 'dilemma some', aminoacid, keywords, channel);
+    let gk: GeneKey = GeneKey.fromItems(index, GKConstants.MaxCodone, shadow, gift, siddhi, organs, ['em1', 'em2'], 23, 'dilemma some', aminoacid, 'some iching', keywords, channel);
     let json: string = JSON.stringify(gk);
     console.log(json);
 }
