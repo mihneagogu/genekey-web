@@ -3,6 +3,7 @@
 const gkModel = [{ "index": 0, "codone": 21, "shadow": { "type": "SHADOW", "description": "shadow" }, "gift": { "type": "GIFT", "description": "gift" }, "siddhi": { "type": "SIDDHI", "description": "siddhi" }, "organs": ["plamani", "inima", "rinichi"], "emotions": ["frica", "semne"], "partner": 45, "dilemma": "Eternal dilemma", "aminoacid": "valine", "iching": "some iching", "keywords": ["virtue", "dignity"], "channel": { "keys": [0, 64], "name": "Some channel" } }];
 const gk0 = new GeneKey(gkModel[0]);
 const geneKeyLibrary = [gk0];
+// Libraries for the value tables
 const dilemmaLibrary = [];
 const aminoacidLibrary = {};
 const organLibrary = {};
@@ -16,7 +17,9 @@ for (let i = 1; i <= GKConstants.MaxKey; i++) {
     gk.organs.forEach(org => addToLibrary(organLibrary, org, gk.index));
     gk.keywords.forEach(kw => addToLibrary(keywordLibrary, kw, gk.index));
 }
-const sortedKeywords = Object.entries(keywordLibrary).sort(([k1, arr1], [k2, arr2]) => {
+function sortLibEntry(here, there) {
+    const [k1, _arr1] = here;
+    const [k2, _arr2] = there;
     if (k1 < k2) {
         return -1;
     }
@@ -24,8 +27,11 @@ const sortedKeywords = Object.entries(keywordLibrary).sort(([k1, arr1], [k2, arr
         return 0;
     }
     return 1;
-});
-console.log(sortedKeywords);
+}
+const _sortedKeywords = Object.entries(keywordLibrary).sort(sortLibEntry);
+const _sortedOrgans = Object.entries(organLibrary).sort(sortLibEntry);
+const sortedKeywords = _sortedKeywords;
+const sortedOrgans = _sortedOrgans;
 function addToLibrary(library, property, toAdd) {
     const keys = library[property];
     if (!keys) {
@@ -38,6 +44,7 @@ function addToLibrary(library, property, toAdd) {
 function printLibrary(lib) {
     console.log(lib);
 }
+console.log(sortedKeywords);
 printLibrary(aminoacidLibrary);
 printLibrary(organLibrary);
 printLibrary(keywordLibrary);

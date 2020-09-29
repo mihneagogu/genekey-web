@@ -1,5 +1,28 @@
-let mainSection = document.getElementById('gk-section')!;
-let sectionUl = mainSection.querySelector('ul')!;
+const mainSection = document.getElementById('gk-section')!;
+const sectionUl = mainSection.querySelector('ul')!;
+
+const dilemmasBtn = document.getElementById('dilemmas-btn')!;
+const aminoacidsBtn = document.getElementById('aminoacids-btn')!;
+const organsBtn = document.getElementById('organs-btn')!;
+const keywordsBtn = document.getElementById('keywords-btn')!;
+
+dilemmasBtn.addEventListener('click', () => {
+    console.log(dilemmaLibrary);
+});
+
+aminoacidsBtn.addEventListener('click', () => {
+    console.log(aminoacidLibrary);
+});
+
+organsBtn.addEventListener('click', () => {
+    console.log(sortedOrgans);
+});
+
+
+keywordsBtn.addEventListener('click', () => {
+    console.log(sortedKeywords);
+});
+
 
 const queryForm = document.getElementById('query-form');
 if (queryForm) {

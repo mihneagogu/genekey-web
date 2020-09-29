@@ -20,8 +20,9 @@ for (let i = 1; i <= GKConstants.MaxKey; i++) {
     gk.keywords.forEach(kw => addToLibrary(keywordLibrary, kw, gk.index));
 }
 
-
-const sortedKeywords = Object.entries(keywordLibrary).sort(([k1, _arr1], [k2, _arr2] ) => {
+function sortLibEntry(here: [string, any], there: [string, any]): number {
+    const [k1, _arr1] = here;
+    const [k2, _arr2] = there;
     if (k1 < k2) {
         return -1;
     }
@@ -29,7 +30,14 @@ const sortedKeywords = Object.entries(keywordLibrary).sort(([k1, _arr1], [k2, _a
         return 0;
     }
     return 1;
-});
+}
+
+const _sortedKeywords: [string, any][] = Object.entries(keywordLibrary).sort(sortLibEntry);
+const _sortedOrgans: [string, any][] = Object.entries(organLibrary).sort(sortLibEntry);
+
+const sortedKeywords = _sortedKeywords as [string, number[]][];
+const sortedOrgans = _sortedOrgans as [string, number[]][];
+
 
 function addToLibrary(library, property, toAdd) {
     const keys = library[property];
