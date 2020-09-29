@@ -98,6 +98,12 @@ button {
   cursor: pointer;
 }
 
+div.library {
+  height: 5vh;
+  width: 50%;
+  margin: 0 auto;
+}
+
 button.alt {
   background: white;
   color: #ff0062;

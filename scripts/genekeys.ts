@@ -21,7 +21,7 @@ for (let i = 1; i <= GKConstants.MaxKey; i++) {
 }
 
 
-const sortedKeywords = Object.entries(keywordLibrary).sort(([k1, arr1], [k2, arr2] ) => {
+const sortedKeywords = Object.entries(keywordLibrary).sort(([k1, _arr1], [k2, _arr2] ) => {
     if (k1 < k2) {
         return -1;
     }
