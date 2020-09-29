@@ -11,8 +11,8 @@ const AMINOACID_LIBRARY_ID = "aminoacid-lib";
 const ORGANS_LIBRARY_ID = "organs-lib";
 const KEYWORDS_LIBRARY_ID = "keywords-lib";
 
-dilemmasBtn.addEventListener('click', () => {
-    let maybeLib: HTMLElement | null = document.getElementById(DILEMMA_LIBRARY_ID);
+function handleLibraryClick(library, libId: string, formatFun: (el: HTMLElement) => void) {
+    let maybeLib: HTMLElement | null = document.getElementById(libId);
     if (maybeLib) {
        if (maybeLib.style.display === 'none') {
             maybeLib.style.display = 'block';
@@ -22,16 +22,32 @@ dilemmasBtn.addEventListener('click', () => {
     } else {
         // not created yet
         const lib: HTMLElement = document.createElement('div');
-        lib.id = DILEMMA_LIBRARY_ID;
+        lib.id = libId;
         lib.className = 'linebreaker';
-        dilemmaLibrary.forEach(line => lib.textContent += `${line}\n`);
+        formatFun(lib);
 
         sectionUl.appendChild(lib);
     }
+
+}
+
+dilemmasBtn.addEventListener('click', () => {
+    handleLibraryClick(dilemmaLibrary, DILEMMA_LIBRARY_ID, (htmlEl) => {
+            dilemmaLibrary.forEach(line => htmlEl.textContent += `${line}\n`);
+        });
 });
 
 aminoacidsBtn.addEventListener('click', () => {
-    console.log(aminoacidLibrary);
+    handleLibraryClick(aminoacidLibrary, AMINOACID_LIBRARY_ID, (htmlEl) => {
+
+        Object.keys(aminoacidLibrary).forEach(acid => {
+            const keys: number[] = aminoacidLibrary[acid];
+            let keysString = "";
+            keys.forEach(k => keysString += `${k} `);
+
+            htmlEl.textContent += `Acid: ${acid.toUpperCase()} has keys: ${keysString}\n`;
+        });
+    });
 });
 
 organsBtn.addEventListener('click', () => {
