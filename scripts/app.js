@@ -5,8 +5,28 @@ const dilemmasBtn = document.getElementById('dilemmas-btn');
 const aminoacidsBtn = document.getElementById('aminoacids-btn');
 const organsBtn = document.getElementById('organs-btn');
 const keywordsBtn = document.getElementById('keywords-btn');
+const DILEMMA_LIBRARY_ID = "dielmmas-lib";
+const AMINOACID_LIBRARY_ID = "aminoacid-lib";
+const ORGANS_LIBRARY_ID = "organs-lib";
+const KEYWORDS_LIBRARY_ID = "keywords-lib";
 dilemmasBtn.addEventListener('click', () => {
-    console.log(dilemmaLibrary);
+    let maybeLib = document.getElementById(DILEMMA_LIBRARY_ID);
+    if (maybeLib) {
+        if (maybeLib.style.display === 'none') {
+            maybeLib.style.display = 'block';
+        }
+        else {
+            maybeLib.style.display = 'none';
+        }
+    }
+    else {
+        // not created yet
+        const lib = document.createElement('div');
+        lib.id = DILEMMA_LIBRARY_ID;
+        lib.className = 'linebreaker';
+        dilemmaLibrary.forEach(line => lib.textContent += `${line}\n`);
+        sectionUl.appendChild(lib);
+    }
 });
 aminoacidsBtn.addEventListener('click', () => {
     console.log(aminoacidLibrary);
