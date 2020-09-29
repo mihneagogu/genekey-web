@@ -21,9 +21,10 @@ function handleLibraryClick(library, libId, formatFun) {
     }
     else {
         // not created yet
-        const lib = document.createElement('div');
+        const lib = document.createElement('li');
         lib.id = libId;
         lib.className = 'linebreaker';
+        lib.classList.add('card');
         formatFun(lib);
         sectionUl.appendChild(lib);
     }
