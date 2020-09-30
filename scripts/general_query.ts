@@ -11,16 +11,9 @@ function generalQuery(query: string): GKQueryResult {
         return {_type: GKQueryDiscriminant.QUERY_ERR, value: 'The query must have at least 1 command'};
     }
 
-    if (args[0].toLowerCase() === 'allorgans') {
-        // Corner case when the person wants all keys which have a certain organ related to them
-        if (!args[1]) {
-            return queryErrorFrom('You wanted to find all the keys related to an organ, but you gave me no organ!');
-        }
-
-        let org: string = args[1];
-        let organKeys = geneKeyLibrary.filter(gk => gk.organs.filter(organ => organ === org).length > 0);
-        let collection: QueryGKCollection = new QueryGKCollection(organKeys, `All the keys related to ${org}`, org);
-        return {_type: GKQueryDiscriminant.TYPE_QUERY_GK_COLLECTION, value: collection };
+    if (args[0].includes('all')) {
+        // allorgans ... | alldilemmas ... | allkeywords ... | allaminoacids ...
+        return allQuery(args);
     }
 
     switch (args[0]) {
@@ -37,6 +30,53 @@ function generalQuery(query: string): GKQueryResult {
         }
     }
 }
+
+/*
+ * 'allorgans', 'alldilemmas', 'allkeywords', 'allaminoacids' query
+ */
+function allQuery(args: string[]): GKQueryResult {
+        if (!args[1]) {
+            return queryErrorFrom('You must give me another argument. What organ/keyword/dilemma/acid are you looking for?');
+        }
+        //
+        // Finds all keys which have args[1] in genekey[property]
+        const patternMatch = (property: string, propertyIsArray: boolean) => {
+            // Search for NEEDLE in the genekey 'haystack'
+            const needle: string = args.splice(1).map(arg => arg).join(" ");
+            let matchingKeys: GeneKey[] = [];
+            let collection: QueryGKCollection;
+
+            if (propertyIsArray) {
+                // Ex: search for 'lungs' in every genekey's organ list (which is string[])
+                matchingKeys = geneKeyLibrary.filter(gk => gk[property].filter(element => element.toLowerCase() === needle).length > 0);
+            } else {
+                // just a single string property
+                matchingKeys = geneKeyLibrary.filter(gk => gk[property].toLowerCase() === needle);
+            }
+            collection = new QueryGKCollection(matchingKeys, `All keys related to ${needle}`, needle);
+
+            return {_type: GKQueryDiscriminant.TYPE_QUERY_GK_COLLECTION, value: collection };
+        }
+
+        switch (args[0]) {
+            case 'allorgans' : {
+                return patternMatch('organs', true);
+            }
+            case 'alldilemmas' : {
+                return patternMatch('dilemma', false);
+            }
+            case 'allkeywords' : {
+                return patternMatch('keywords', true);
+            }
+            case 'allaminoacids' : {
+                return patternMatch('aminoacid', false);
+            }
+            default: {
+                return queryErrorFrom("Available 'all' commands: 'allkeyowrds', 'allorgans', 'allaminoacids', 'alldilemmas'");
+            }
+        }
+}
+
 
 interface QueryGene {
     gk: GeneKey,
