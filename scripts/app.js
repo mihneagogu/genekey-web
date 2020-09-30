@@ -9,7 +9,10 @@ const DILEMMA_LIBRARY_ID = "dielmmas-lib";
 const AMINOACID_LIBRARY_ID = "aminoacid-lib";
 const ORGANS_LIBRARY_ID = "organs-lib";
 const KEYWORDS_LIBRARY_ID = "keywords-lib";
-function handleLibraryClick(library, libId, formatFun) {
+/*
+ * Handles the 'click' event listener of a given library button
+ */
+function handleLibraryClick(libId, formatFun) {
     let maybeLib = document.getElementById(libId);
     if (maybeLib) {
         if (maybeLib.style.display === 'none') {
@@ -30,25 +33,39 @@ function handleLibraryClick(library, libId, formatFun) {
     }
 }
 dilemmasBtn.addEventListener('click', () => {
-    handleLibraryClick(dilemmaLibrary, DILEMMA_LIBRARY_ID, (htmlEl) => {
-        dilemmaLibrary.forEach(line => htmlEl.textContent += `${line}\n`);
+    handleLibraryClick(DILEMMA_LIBRARY_ID, (htmlEl) => {
+        dilemmaLibrary.forEach(line => htmlEl.textContent += `${line}\n\n`);
     });
 });
 aminoacidsBtn.addEventListener('click', () => {
-    handleLibraryClick(aminoacidLibrary, AMINOACID_LIBRARY_ID, (htmlEl) => {
+    handleLibraryClick(AMINOACID_LIBRARY_ID, (htmlEl) => {
         Object.keys(aminoacidLibrary).forEach(acid => {
             const keys = aminoacidLibrary[acid];
             let keysString = "";
             keys.forEach(k => keysString += `${k} `);
-            htmlEl.textContent += `Acid: ${acid.toUpperCase()} has keys: ${keysString}\n`;
+            htmlEl.textContent += `Acid: ${acid.toUpperCase()} has keys: ${keysString}\n\n`;
         });
     });
 });
 organsBtn.addEventListener('click', () => {
-    console.log(sortedOrgans);
+    handleLibraryClick(ORGANS_LIBRARY_ID, (htmlEl) => {
+        for (let i = 0; i < sortedOrgans.length; i++) {
+            let [org, keys] = sortedOrgans[i];
+            let keysString = "";
+            keys.forEach(k => keysString += `${k} `);
+            htmlEl.textContent += `Organ ${org.toUpperCase()} has keys: ${keysString}\n\n`;
+        }
+    });
 });
 keywordsBtn.addEventListener('click', () => {
-    console.log(sortedKeywords);
+    handleLibraryClick(KEYWORDS_LIBRARY_ID, (htmlEl) => {
+        for (let i = 0; i < sortedKeywords.length; i++) {
+            let [kw, keys] = sortedKeywords[i];
+            let keysString = "";
+            keys.forEach(k => keysString += `${k} `);
+            htmlEl.textContent += `Keyword ${kw.toUpperCase()} has keys: ${keysString}\n\n`;
+        }
+    });
 });
 const queryForm = document.getElementById('query-form');
 if (queryForm) {

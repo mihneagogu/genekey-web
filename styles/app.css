@@ -103,8 +103,9 @@ button {
 
 div.library {
   height: 5vh;
-  width: 50%;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 button.alt {
